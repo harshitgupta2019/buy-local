@@ -1,0 +1,52 @@
+
+#banner {
+
+    background: #ddbaba;
+    padding: 4em 0 4em 0;
+}
+
+    #banner h1, #banner h2, #banner h3, #banner h4, #banner h5, #banner h6 {
+        color: #96282c;
+    }
+
+
+    #banner .inner {
+        max-width: 75em;
+        width: calc(100% - 6em);
+        margin:0 auto;
+        position: relative;
+        z-index: 10000;
+        line-height: 1.5;
+    }
+
+        @media screen and (max-width: 480px) {
+
+            #banner .inner {
+                max-width: 90%;
+                width: 90%;
+            }
+
+        }
+
+    #banner h1 {
+        font-size: 2em;
+        margin: 0 0 1em 0;
+        padding: 0;
+        letter-spacing: 3px;
+        font-weight: 700;
+    }
+
+    #about {
+		padding: 6em 0 4em 0;
+	}
+
+    section .inner {
+		max-width: 65em;
+		width: calc(100% - 6em);
+		margin: 0 auto;
+	}
+    p {
+        margin: 1rem;
+    }
+
+        
