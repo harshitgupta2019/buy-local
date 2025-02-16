@@ -22,7 +22,7 @@ const connectDB = async () => {
     console.log('MongoDB Connected Successfully');
   } catch (error) {
     console.error('Connection Details:', {
-      host: uri.split('@')[1]?.split('/')[0],
+      host: process.env.MONGODB_URI.split('@')[1]?.split('/')[0],
       error: error.message,
       code: error.code,
       name: error.name
