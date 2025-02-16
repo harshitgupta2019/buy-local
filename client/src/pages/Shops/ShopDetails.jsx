@@ -42,7 +42,7 @@ const ProductModal = ({ isOpen, onClose, product, onSubmit, mode }) => {
         image: product.image
       });
       if (product.image) {
-        setImagePreview(`http://localhost:5000/uploads/${product.image}`);
+        setImagePreview(`${process.env.REACT_APP_API_URL}/uploads/${product.image}` || `http://localhost:5000/uploads/${product.image}`);
       }
     } else {
       setFormData({
@@ -434,7 +434,7 @@ const ShopDetails = () => {
       return (
         <div key={product._id} className="product-card owner-view">
           <div className="product-image">
-            <img src={product.image ? `http://localhost:5000/uploads/${product.image}` : ''} alt={product.name} />
+            <img src={product.image ? (`${process.env.REACT_APP_API_URL}/uploads/${product.image}`||`http://localhost:5000/uploads/${product.image}` ): ''} alt={product.name} />
           </div>
           <div className="product-info">
             <h3>{product.name}</h3>
@@ -464,7 +464,7 @@ const ShopDetails = () => {
     return (
       <div key={product._id} className="product-card">
         <div className="product-image">
-          <img src={product.image ? `http://localhost:5000/uploads/${product.image}` : ''} alt={product.name} />
+          <img src={product.image ? (`${process.env.REACT_APP_API_URL}/uploads/${product.image}`||`http://localhost:5000/uploads/${product.image}` ): ''} alt={product.name} />
         </div>
         <div className="product-info">
           <h3>{product.name}</h3>
@@ -520,7 +520,7 @@ const ShopDetails = () => {
     <div className="shop-details-container">
       <div className="shop-header">
         <div className="shop-hero">
-          <img src={shop.image ? `http://localhost:5000/uploads/${shop.image}` : ''} alt={shop.name} />
+          <img src={shop.image ?(`${process.env.REACT_APP_API_URL}/uploads/${shop.image}`||  `http://localhost:5000/uploads/${shop.image}` ): ''} alt={shop.name} />
           <div className="shop-hero-content">
             <h1>{shop.name}</h1>
             <p className="shop-category">{shop.category}</p>

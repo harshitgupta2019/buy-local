@@ -208,7 +208,7 @@ const ShopList = () => {
             >
               <div className="shop-image">
               <img 
-                src={shop.image ? `http://localhost:5000/uploads/${shop.image}` : ''} 
+                src={shop.image ? (`${process.env.REACT_APP_API_URL}/uploads/${shop.image}`|| `http://localhost:5000/uploads/${shop.image}`) : ''} 
                 alt={shop.name} 
                 onError={(e) => { e.target.src = ''; }}
               />
