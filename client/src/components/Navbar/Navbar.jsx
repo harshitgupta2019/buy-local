@@ -1,94 +1,90 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { IoClose, IoMenu } from "react-icons/io5";
-import "./Navbar.css";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
+import { useEffect, useState } from 'react';
+import './Navbar.css';
 
 const Navbar = () => {
-  const [showMenu, setShowMenu] = useState(false);
+  const { user } = useAuth();
+  const { cartItems } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > -1);
+    };
 
-  const closeMenuOnMobile = () => {
-    if (window.innerWidth <= 1150) {
-      setShowMenu(false);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToAbout = () => {
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollToAbout: true } });
+    } else {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
+
   return (
-    <header className="header">
-      <nav className="nav">
-        <NavLink to="/" className="nav__logo">
-          TimeSavingGroceries
-        </NavLink>
+    <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo">
+          LocalShop
+        </Link>
 
-        <div
-          className={`nav__menu ${showMenu ? "show-menu" : ""}`}
-          id="nav-menu"
-        >
-          <ul className="nav__list">
-            <li className="nav__item">
-              <NavLink to="/" className="nav__link" onClick={closeMenuOnMobile}>
-                Home
-              </NavLink>
-            </li>
-            <li className="nav__item">
-              <NavLink
-                to="/"
-                className="nav__link"
-                onClick={closeMenuOnMobile}
-              >
-                About Us
-              </NavLink>
-            </li>
-            <li className="nav__item">
-              <NavLink
-                to="/"
-                className="nav__link"
-                onClick={closeMenuOnMobile}
-              >
-                Add Shop
-              </NavLink>
-            </li>
-            <li className="nav__item">
-              <NavLink
-                to="/"
-                className="nav__link"
-                onClick={closeMenuOnMobile}
-              >
-                Shop Now
-              </NavLink>
-            </li>
-            <li className="nav__item">
-              <NavLink
-                to="/"
-                className="nav__link"
-                onClick={closeMenuOnMobile}
-              >
-                Contact Us
-              </NavLink>
-            </li>
-            <li className="nav__item">
-              <NavLink to="/login" className="nav__link nav__cta">
-                Login
-              </NavLink>
-            </li>
-            <li className="nav__item">
-              <NavLink to="/register" className="nav__link nav__cta">
-                Register
-              </NavLink>
-            </li>
-          </ul>
-          <div className="nav__close" id="nav-close" onClick={toggleMenu}>
-            <IoClose />
-          </div>
+        <div className="nav-links">
+          <Link to="/" className="nav-link hover-effect">
+            Home
+          </Link>
+          <button onClick={scrollToAbout} className="nav-link hover-effect">
+            About Us
+          </button>
+          
+          {user ? (
+            <>
+              {user.role === 'shop_owner' ? (
+                <>
+                  <Link to="/shop/my-shops" className="nav-link hover-effect">
+                    My Shops
+                  </Link>
+                  <Link to="/shop/add" className="nav-link hover-effect">
+                    Add Shop
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/shops" className="nav-link hover-effect">
+                    Shop Now
+                  </Link>
+                  <Link to="/customer/orders" className="nav-link hover-effect">
+                    My Orders
+                  </Link>
+                  <Link to="/customer/cart" className="nav-link cart-link hover-effect">
+                    Cart
+                    {cartItems.length > 0 && (
+                      <span className="cart-badge">{cartItems.length}</span>
+                    )}
+                  </Link>
+                </>
+              )}
+              <div className="user-menu" onClick={() => navigate('/profile')}>
+                <span className="profile-initial">{user.name.charAt(0).toUpperCase()}</span>
+              </div>
+            </>
+          ) : (
+            <Link to="/auth" className="nav-link auth-link hover-effect">
+              Login/Register
+            </Link>
+          )}
         </div>
-
-        <div className="nav__toggle" id="nav-toggle" onClick={toggleMenu}>
-          <IoMenu />
-        </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 };
 

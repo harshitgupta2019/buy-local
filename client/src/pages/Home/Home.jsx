@@ -1,82 +1,220 @@
-import React from 'react'
-import './Home.css'
-import one from '../../assests/carousal0.png'
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import "./Home.css";
+import bannerImage from "../../assests/banner.png";
+
 const Home = () => {
-  return (	
-	<div>
-		<section id="banner" >
+  const { user, isAuthenticated } = useAuth();
+  const { state } = useLocation();
 
-			<div class="inner">
-				<h1><span>Connecting Locals peoples</span></h1>
-				<img src={one} height={500} width={1200}/>
-			</div>
-		</section>
-		<section id="about">
-			<div class="inner">
-				<header>
-					<h2>About<br/><br/></h2>
-				</header>
-				<p><b>Time Saving Groceries</b></p>
-				<p>It provides a platform where customers can connect to their local shops. It aims at increasing the interaction between customers and shops in their locality by helping customers book their number on the shop they want to visit. The online booking system saves the customers, increases the sales in shops, and also helps in maintaining social distancing. Customers can also show their support to small businesses by donating them some funds.</p>
-				<br/><p><b>FEATURES-</b></p>
-				<p><ul><span class="fa fa-hand-o-right"></span> <b>Support small Biz:</b> It provides an easy-to-use interface to see local small businesses and donate some money to them if they need financial help</ul></p>
-				<p><ul><span class="fa fa-hand-o-right"></span> <b>Book your number:</b> Customers can reserve their slot online at any shop they want to visit, they will be provided with a token number and they will be notified the time they should visit that shop.</ul></p>
-				<p><ul><span class="fa fa-hand-o-right"></span> <b>Advertise your product/service/offer:</b> This app provides a column where business owners can share a post advertising their products, services, offers.</ul></p>
-			</div>
-		</section>
-		<section id="addshop">
-			<div class="inner">
+  useEffect(() => {
+    if (state?.scrollToAbout) {
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      }
+      window.history.replaceState({}, document.title);
+    }
+  }, [state]);
 
-				<article>
-					<div class="content">
-						<header>
-							<h2>Add Shop<br/><br/></h2>
-							<p>To avail all the features offered to shops, shop owner must-</p>
-						</header>
+  return (
+    <div className="home-container">
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <h1 className="hero-title">Discover Local Grocery Shops</h1>
+          <p className="hero-subtitle">
+            Connect with neighborhood stores and shop conveniently from the
+            comfort of your home
+          </p>
+          <div className="hero-buttons">
+            <Link to="/shops" className="primary-button">
+              Explore Shops
+            </Link>
+            {!isAuthenticated && (
+              <Link to="/auth" className="secondary-button">
+                Join Us
+              </Link>
+            )}
+          </div>
+        </div>
+        <div className="hero-image">
+          <img src={bannerImage} alt="Local Shopping" />
+        </div>
+      </section>
 
-						<span class="icon fa-user-circle"></span>
-						<header>
-							<h3>Step-1</h3>
-						</header>
-						<p>Login/Register on website </p>
-						<ul class="actions">
-							<li><a href="/formlogin" class="button alt">Login/Register</a></li>
-						</ul>
-					</div>
-				</article>
-				<article>
-					<div class="content">
-						<header>
-							<h2></h2>
-						</header>
-						<span class="icon fa-id-card-o"></span>
-						<header>
-							<h3>Step-2</h3>
-						</header>
-						<p>If your shop/startup/business is not registered under Ministry of micro, small and medium enterprises (MSME) or Shops and Establishment act, then first register there</p>
-						<ul class="actions">
-							<li><a href="http://my.msme.gov.in/MyMsme/Reg/Home.aspx" class="button alt">MSME </a></li>
-						</ul>
-					</div>
-				</article>
-				<article>
-				<div class="content">
-						<header>
-							<h2></h2>
-						</header>
-						<span class="icon fa-handshake-o"></span>
-						<header>
-							<h3>Step-3</h3>
-						</header>
-						<p>Fill required details in the form to register your shop/startup/business on 5-&-DIME</p>
-						<ul class="actions">
-						</ul>
-					</div>
-				</article>
-			</div>
-		</section>
-	</div>
-  )
-}
+      {/* About Section */}
+      <section id="about" className="about-section">
+        <div className="section-content">
+          <h2 className="section-title">Why Choose LocalShop?</h2>
+          <div className="features-grid">
+            <div className="feature-card">
+              <div className="feature-icon">🏪</div>
+              <h3>Support Local</h3>
+              <p>Help your community thrive by supporting local businesses</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">🚚</div>
+              <h3>Easy Delivery</h3>
+              <p>Get groceries delivered to your doorstep</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">💰</div>
+              <h3>Best Prices</h3>
+              <p>Compare prices and find the best deals</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">⭐</div>
+              <h3>Quality First</h3>
+              <p>Verified shops and quality products</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-export default Home
+      {/* How It Works Section */}
+      <section className="how-it-works-section">
+        <div className="section-content">
+          <h2 className="section-title">How It Works</h2>
+          <div className="steps-container">
+            {[
+              {
+                number: "01",
+                title: "Create Account",
+                description: "Sign up as a customer or shop owner",
+              },
+              {
+                number: "02",
+                title: "Browse Shops",
+                description: "Explore local stores in your area",
+              },
+              {
+                number: "03",
+                title: "Place Order",
+                description: "Select items and choose delivery options",
+              },
+              {
+                number: "04",
+                title: "Quick Delivery",
+                description: "Receive your items at your doorstep",
+              },
+            ].map((step, index) => (
+              <div key={index} className="step-card">
+                <div className="step-number">{step.number}</div>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="cta-section">
+        <div className="section-content">
+          <h2>Ready to Start Shopping?</h2>
+          <p>Join thousands of happy customers shopping locally</p>
+          <div className="cta-buttons">
+            <Link to="/shops" className="primary-button">
+              Browse Shops
+            </Link>
+            {user?.role === "shop_owner" ? (
+              <Link to="/shop/add" className="secondary-button">
+                Add Your Shop
+              </Link>
+            ) : (
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("about")
+                    .scrollIntoView({ behavior: "smooth" })
+                }
+                className="secondary-button"
+              >
+                Learn More
+              </button>
+            )}
+          </div>
+        </div>
+      </section>
+      <section className="stats-section">
+        <div className="section-content">
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-number">1000+</div>
+              <div className="stat-label">Local Shops</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">50K+</div>
+              <div className="stat-label">Happy Customers</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">100K+</div>
+              <div className="stat-label">Orders Delivered</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">4.8</div>
+              <div className="stat-label">Average Rating</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="testimonials-section">
+        <div className="section-content">
+          <h2 className="section-title">What Our Customers Say</h2>
+          <div className="testimonials-grid">
+            <div className="testimonial-card">
+              <p className="testimonial-quote">
+                "LocalShop has made grocery shopping so much easier. I can
+                support local businesses while getting everything delivered
+                right to my door!"
+              </p>
+              <div className="testimonial-author">
+                <div className="author-avatar">S</div>
+                <div className="author-info">
+                  <h4>Sarah Johnson</h4>
+                  <p>Regular Customer</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="testimonial-card">
+              <p className="testimonial-quote">
+                "As a shop owner, this platform has helped me reach more
+                customers and grow my business significantly."
+              </p>
+              <div className="testimonial-author">
+                <div className="author-avatar">M</div>
+                <div className="author-info">
+                  <h4>Mike Thompson</h4>
+                  <p>Shop Owner</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="testimonial-card">
+              <p className="testimonial-quote">
+                "The variety of local shops available is amazing. I've
+                discovered so many great stores in my neighborhood!"
+              </p>
+              <div className="testimonial-author">
+                <div className="author-avatar">L</div>
+                <div className="author-info">
+                  <h4>Lisa Chen</h4>
+                  <p>Regular Customer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* App Features Section */}
+    </div>
+  );
+};
+
+export default Home;

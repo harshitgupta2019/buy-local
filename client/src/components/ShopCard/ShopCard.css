@@ -1,0 +1,55 @@
+.shop-card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300;
+  }
+  
+  .shop-image-container {
+    @apply relative;
+  }
+  
+  .shop-image {
+    @apply w-full h-48 object-cover;
+  }
+  
+  .shop-status {
+    @apply absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-open {
+    @apply bg-green-500 text-white;
+  }
+  
+  .status-closed {
+    @apply bg-red-500 text-white;
+  }
+  
+  .shop-info {
+    @apply p-4 space-y-3;
+  }
+  
+  .shop-name {
+    @apply text-xl font-semibold text-gray-800;
+  }
+  
+  .shop-description {
+    @apply text-sm text-gray-600 line-clamp-2;
+  }
+  
+  .shop-details {
+    @apply space-y-2;
+  }
+  
+  .shop-detail-item {
+    @apply flex items-center gap-2 text-sm text-gray-600;
+  }
+  
+  .shop-rating {
+    @apply flex items-center gap-2 mt-2;
+  }
+  
+  .rating-stars {
+    @apply text-yellow-400;
+  }
+  
+  .rating-value {
+    @apply text-sm font-medium text-gray-600;
+  }
