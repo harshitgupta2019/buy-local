@@ -345,6 +345,31 @@ const ShopDetails = () => {
       })
     : [];
 
+    const isShopOpen = () => {
+      if (!shop?.openingTime || !shop?.closingTime) return false;
+      
+      const now = new Date();
+      const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes
+      
+      // Convert shop times to minutes for comparison
+      const [openHours, openMinutes] = shop.openingTime.split(':').map(Number);
+      const [closeHours, closeMinutes] = shop.closingTime.split(':').map(Number);
+      
+      const openingTimeInMinutes = openHours * 60 + openMinutes;
+      const closingTimeInMinutes = closeHours * 60 + closeMinutes;
+      
+      return currentTime >= openingTimeInMinutes && currentTime <= closingTimeInMinutes;
+    };
+  
+    // Function to format time for display
+    const formatTime = (timeString) => {
+      if (!timeString) return '';
+      const [hours, minutes] = timeString.split(':');
+      const time = new Date();
+      time.setHours(parseInt(hours), parseInt(minutes));
+      return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
 
   // Customer-specific functions
   const handleUpdateQuantity = (productId, change) => {
@@ -520,20 +545,53 @@ const ShopDetails = () => {
     <div className="shop-details-container">
       <div className="shop-header">
         <div className="shop-hero">
-          <img src={shop.image ?(`${process.env.REACT_APP_API_URL}/uploads/${shop.image}`||  `http://localhost:5000/uploads/${shop.image}` ): ''} alt={shop.name} />
-          <div className="shop-hero-content">
-            <h1>{shop.name}</h1>
-            <p className="shop-category">{shop.category}</p>
-            <div className="shop-rating">
-              <span className="stars">{'★'.repeat(Math.floor(shop.rating))}</span>
-              <span className="rating-value">({shop.rating})</span>
+          <div className="shop-image-container">
+            <img 
+              src={shop.image ? (`${process.env.REACT_APP_API_URL}/uploads/${shop.image}` || `http://localhost:5000/uploads/${shop.image}`) : ''} 
+              alt={shop.name} 
+            />
+          </div>
+          <div className="shop-info">
+            <div className="shop-primary-info">
+              <h1>{shop.name}</h1>
+              <div className="shop-meta">
+                <span className="shop-category">{shop.category}</span>
+                <div className="shop-rating">
+                  <span className="stars">{'★'.repeat(Math.floor(shop.rating || 5))}</span>
+                  <span className="rating-value">({shop.rating || 5})</span>
+                </div>
+              </div>
             </div>
-            <p className="shop-address">{formatAddress(shop.address)}</p>
-            {shop.isOpen ? (
-              <span className="status open">Open Now</span>
-            ) : (
-              <span className="status closed">Closed</span>
+
+            {shop.description && (
+              <div className="shop-description">
+                <h2>About {shop.name}</h2>
+                <p>{shop.description}</p>
+              </div>
             )}
+            
+            <div className="shop-details-grid">
+              <div className="detail-item">
+                <span className="detail-label">Address</span>
+                <span className="detail-value">{formatAddress(shop.address)}</span>
+              </div>
+              
+              <div className="detail-item">
+                <span className="detail-label">Hours</span>
+                <span className="detail-value">
+                  {formatTime(shop.openingTime)} - {formatTime(shop.closingTime)}
+                </span>
+              </div>
+              
+              <div className="detail-item status-container">
+                {/* <span className="detail-label">Status</span> */}
+                {isShopOpen() ? (
+                  <span className="status open">Open Now</span>
+                ) : (
+                  <span className="status closed">Closed</span>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

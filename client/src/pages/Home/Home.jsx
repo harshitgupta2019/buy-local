@@ -29,9 +29,18 @@ const Home = () => {
             comfort of your home
           </p>
           <div className="hero-buttons">
-            <Link to="/shops" className="primary-button">
-              Explore Shops
-            </Link>
+            {
+              user?.role === "shop_owner" ? (
+                <Link to="/shop/my-shops" className="primary-button">
+                  My Shops
+                </Link>
+              ):(
+                <Link to="/shops" className="primary-button">
+                  Explore Shops
+                </Link>
+              )
+            } 
+            
             {!isAuthenticated && (
               <Link to="/auth" className="secondary-button">
                 Join Us
@@ -116,14 +125,23 @@ const Home = () => {
           <h2>Ready to Start Shopping?</h2>
           <p>Join thousands of happy customers shopping locally</p>
           <div className="cta-buttons">
-            <Link to="/shops" className="primary-button">
-              Browse Shops
-            </Link>
+            {
+              user?.role === "shop_owner" ? (
+                <Link to="/shop/my-shops" className="primary-button">
+                  My Shops
+                </Link>
+              ):(
+                <Link to="/shops" className="primary-button">
+                  Browse Shops
+                </Link>
+              )
+            } 
             {user?.role === "shop_owner" ? (
               <Link to="/shop/add" className="secondary-button">
                 Add Your Shop
               </Link>
             ) : (
+              
               <button
                 onClick={() =>
                   document
