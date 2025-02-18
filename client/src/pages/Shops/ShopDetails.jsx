@@ -577,7 +577,7 @@ const ShopDetails = () => {
               </div>
               
               <div className="detail-item">
-                <span className="detail-label">Hours</span>
+                <span className="detail-label"> Opening Hours</span>
                 <span className="detail-value">
                   {formatTime(shop.openingTime)} - {formatTime(shop.closingTime)}
                 </span>

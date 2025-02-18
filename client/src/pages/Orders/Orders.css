@@ -23,6 +23,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
     transition: transform 0.2s ease;
+    transform: translateY(-2px);
   }
   
   .order-card:hover {
@@ -50,7 +51,7 @@
     border-radius: 4px;
     font-size: 0.9rem;
     font-weight: 500;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
   }
   
   .status.pending {

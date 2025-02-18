@@ -106,6 +106,30 @@ const ShopList = () => {
     return distance.toFixed(1);
   };
 
+  const isShopOpen = (shop) => {
+    if (!shop?.openingTime || !shop?.closingTime) return false;
+    
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes
+    
+    // Convert shop times to minutes for comparison
+    const [openHours, openMinutes] = shop.openingTime.split(':').map(Number);
+    const [closeHours, closeMinutes] = shop.closingTime.split(':').map(Number);
+    
+    const openingTimeInMinutes = openHours * 60 + openMinutes;
+    const closingTimeInMinutes = closeHours * 60 + closeMinutes;
+    
+    return currentTime >= openingTimeInMinutes && currentTime <= closingTimeInMinutes;
+  };
+
+  const formatTime = (timeString) => {
+    if (!timeString) return '';
+    const [hours, minutes] = timeString.split(':');
+    const time = new Date();
+    time.setHours(parseInt(hours), parseInt(minutes));
+    return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   const handleFilterChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
@@ -212,7 +236,7 @@ const ShopList = () => {
                 alt={shop.name} 
                 onError={(e) => { e.target.src = ''; }}
               />
-                {shop.isOpen ? (
+                {isShopOpen(shop) ? (
                   <span className="status open">Open</span>
                 ) : (
                   <span className="status closed">Closed</span>
@@ -226,9 +250,20 @@ const ShopList = () => {
                     {calculateDistance(shop.lat, shop.lng)} km away
                   </p>
                 )}
+                {shop.description && (
+                  <div className="shop-description">
+                    <p>{shop.description}</p>
+                  </div>
+                )}
+                <div className="detail-item">
+                  <span className="detail-label">Opening Hours</span>
+                  <span className="detail-value">
+                    {formatTime(shop.openingTime)} - {formatTime(shop.closingTime)}
+                  </span>
+                </div>
                 <div className="shop-rating">
-                  <span className="stars">{'★'.repeat(Math.floor(shop.rating || 0))}</span>
-                  <span className="rating-value">({shop.rating || 0})</span>
+                  <span className="stars">{'★'.repeat(Math.floor(shop.rating || 5))}</span>
+                  <span className="rating-value">({shop.rating || 5})</span>
                 </div>
                 <p className="shop-address">{formatAddress(shop.address)}</p>
               </div>

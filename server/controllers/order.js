@@ -4,7 +4,7 @@ const { ORDER_STATUS } = require('../config/constants');
 
 exports.getOrders = asyncHandler(async (req, res) => {
   let query = {};
-  if (req.query){
+  if (req.query && Object.keys(req.query).length > 0){
     query.shop = { $in: req.query.shopId };
   }
   // If user is customer, show their orders
@@ -21,7 +21,10 @@ exports.getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find(query)
     .populate('user', 'name email')
     .populate('shop', 'name')
-    .populate('products.product', 'name price');
+    .populate({
+      path: 'products.product',  
+      select: 'name'   
+    })
   
   res.status(200).json({
     success: true,

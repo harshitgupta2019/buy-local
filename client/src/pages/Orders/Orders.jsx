@@ -51,7 +51,7 @@ const Orders = () => {
             <div className="order-items">
               <h4>Items:</h4>
               {order.products.map((item) => (
-                <div key={item.product._id} className="order-item">
+                <div key={item._id} className="order-item">
                   <span>{item.product.name}</span>
                   <span>x{item.quantity}</span>
                   <span>₹{item.price.toFixed(2)}</span>
