@@ -61,7 +61,7 @@ const Auth = () => {
                 <h2 className="form-title">LOGIN</h2>
                 {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleSubmit} className="register-form">
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="email">
                       <i className="zmdi zmdi-email"></i>
                     </label>
@@ -73,7 +73,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="password">
                       <i className="zmdi zmdi-lock"></i>
                     </label>
@@ -106,7 +106,7 @@ const Auth = () => {
                 <h2 className="form-title">REGISTER</h2>
                 {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleSubmit} className="register-form">
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="name">
                       <i className="zmdi zmdi-account material-icons-name"></i>
                     </label>
@@ -118,7 +118,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="email">
                       <i className="zmdi zmdi-email"></i>
                     </label>
@@ -130,7 +130,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="phone">
                       <i className="zmdi zmdi-phone"></i>
                     </label>
@@ -142,7 +142,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="gender">
                       <i className="zmdi zmdi-male-female"></i>
                     </label>
@@ -154,7 +154,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, gender: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="age">
                       <i className="zmdi zmdi-calendar"></i>
                     </label>
@@ -166,7 +166,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, age: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="password">
                       <i className="zmdi zmdi-lock"></i>
                     </label>
@@ -178,7 +178,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="password2">
                       <i className="zmdi zmdi-lock-outline"></i>
                     </label>
@@ -190,7 +190,7 @@ const Auth = () => {
                       onChange={(e) => setFormData({...formData, password2: e.target.value})}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group input-textarea">
                     <label htmlFor="role">
                       <i className="zmdi zmdi-assignment-account"></i>
                     </label>

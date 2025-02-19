@@ -50,6 +50,9 @@
     box-sizing: border-box;
     font-size: 16px;
   }
+  .input-textarea input, .input-textarea select{
+    margin-left: 18px;
+  }
   
   .form-group input:focus {
     border-bottom: 1px solid #222;
@@ -61,6 +64,11 @@
     top: 50%;
     transform: translateY(-50%);
     color: #222;
+  }
+
+.form-button{
+    left: 4%;
+    background-color: #6dabe4;
   }
   
   .form-submit {
