@@ -13,6 +13,7 @@ const ShopList = () => {
     category: '',
     distance: '',
     rating: '',
+    pincode: '',
     isOpen: false
   });
   const navigate = useNavigate();
@@ -68,7 +69,9 @@ const ShopList = () => {
                        response.data.shops ? response.data.shops : [];
       
       setShops(shopsData);
-      setFilteredShops(shopsData);
+      
+      // Apply client-side filters
+      applyClientSideFilters(shopsData, currentFilters);
     } catch (error) {
       console.error("Error fetching shops:", error);
       setError(error.response?.data?.message || 'Failed to fetch shops. Please try again later.');
@@ -80,6 +83,32 @@ const ShopList = () => {
     }
   };
 
+  // Apply filters that need to be handled client-side
+  const applyClientSideFilters = (shops, currentFilters) => {
+    let filtered = [...shops];
+    
+    // Apply isOpen filter client-side
+    if (currentFilters.isOpen) {
+      filtered = filtered.filter(shop => isShopOpen(shop));
+    }
+    
+    // Apply pincode filter if provided
+    if (currentFilters.pincode) {
+      filtered = filtered.filter(shop => {
+        if (typeof shop.address === 'object' && shop.address) {
+          return shop.address.zip === currentFilters.pincode;
+        } else if (typeof shop.address === 'string') {
+          // Try to extract pincode from address string
+          const addressParts = shop.address.split(' ');
+          return addressParts.includes(currentFilters.pincode);
+        }
+        return false;
+      });
+    }
+    
+    setFilteredShops(filtered);
+  };
+
   const formatAddress = (address) => {
     if (!address) return '';
     if (typeof address === 'string') return address;
@@ -87,7 +116,6 @@ const ShopList = () => {
     const { street, city, state, zip } = address;
     return `${street}, ${city}, ${state} ${zip}`.trim();
   };
-
 
   const calculateDistance = (shopLat, shopLng) => {
     if (!userLocation) return null;
@@ -119,6 +147,11 @@ const ShopList = () => {
     const openingTimeInMinutes = openHours * 60 + openMinutes;
     const closingTimeInMinutes = closeHours * 60 + closeMinutes;
     
+    // Handle cases where closing time is after midnight
+    if (closingTimeInMinutes < openingTimeInMinutes) {
+      return currentTime >= openingTimeInMinutes || currentTime <= closingTimeInMinutes;
+    }
+    
     return currentTime >= openingTimeInMinutes && currentTime <= closingTimeInMinutes;
   };
 
@@ -140,7 +173,14 @@ const ShopList = () => {
     };
     
     setFilters(newFilters);
-    fetchShops(newFilters);
+    
+    // Handle client-side filters separately
+    if (name === 'isOpen' || name === 'pincode') {
+      applyClientSideFilters(shops, newFilters);
+    } else {
+      // Fetch from API for other filters
+      fetchShops(newFilters);
+    }
   };
 
   // Debug logging to check the shape of filteredShops
@@ -195,6 +235,17 @@ const ShopList = () => {
               <option value="2">2+ Stars</option>
             </select>
           </div>
+          
+          <div className="filter-group">
+            <label>Pincode</label>
+            <input
+              type="text"
+              name="pincode"
+              value={filters.pincode}
+              onChange={handleFilterChange}
+              placeholder="Enter pincode"
+            />
+          </div>
 
           <div className="filter-group checkbox">
             <label>
@@ -226,16 +277,16 @@ const ShopList = () => {
         ) : (
           filteredShops.map(shop => (
             <div 
-              key={shop.id} 
+              key={shop.id || shop._id} 
               className="shop-card"
               onClick={() => navigate(`/shops/${shop._id}`)}
             >
               <div className="shop-image">
-              <img 
-                src={shop.image ? (`${process.env.REACT_APP_API_URL}/uploads/${shop.image}`|| `http://localhost:5000/uploads/${shop.image}`) : ''} 
-                alt={shop.name} 
-                onError={(e) => { e.target.src = ''; }}
-              />
+                <img 
+                  src={shop.image ? (`${process.env.REACT_APP_API_URL}/uploads/${shop.image}` || `http://localhost:5000/uploads/${shop.image}`) : ''} 
+                  alt={shop.name} 
+                  onError={(e) => { e.target.src = ''; }}
+                />
                 {isShopOpen(shop) ? (
                   <span className="status open">Open</span>
                 ) : (

@@ -202,3 +202,51 @@
       margin-bottom: 1rem;
     }
   }
+
+  /* Add this to your existing ShopList.css file */
+
+.filter-group input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  height: 40px; /* Match the height of select dropdowns */
+}
+
+.filter-group input[type="text"]:focus {
+  border-color: #4a90e2;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.filter-group input[type="text"]::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Make sure the pincode input is properly styled in grid layout */
+@media (max-width: 768px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .filters-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1201px) {
+  .filters-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Make the checkbox filter take less space */
+  .filter-group.checkbox {
+    grid-column: 3;
+  }
+}
